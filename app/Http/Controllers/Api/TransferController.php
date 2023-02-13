@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transfer;
+use App\Models\Item;
 use Illuminate\Http\Request;
 
 class TransferController extends Controller
@@ -16,6 +17,9 @@ class TransferController extends Controller
     public function index()
     {
         //
+        $transfers = Transfer::with('items')->get();
+
+        return response()->json($transfers);
     }
 
     /**
@@ -36,7 +40,36 @@ class TransferController extends Controller
      */
     public function store(Request $request)
     {
-        //
+  
+        $error = $request->validate([
+            'brand' => 'required',
+            'barcode' => 'required',
+            'gt' => 'required',
+            'supplier_id' => 'required'
+        ]);
+
+        $transfer = Transfer::create($request->all());
+        $allItems = array();
+        if(isset($transfer)) {
+            foreach($request->items as $item) { 
+                $transfer_id = [
+                    'transfer_id' => $transfer->id
+                ];
+                $itemToSave= array_merge($transfer_id, $item);
+                $savedItem = Item::create($itemToSave);
+            };
+        };
+
+        if(isset($savedItem) && isset($transfer)) {
+            return response()->json([
+                'message' => 'Success'
+            ], 200);
+        }else {
+            return response()->json([
+                'message' => 'Error'
+            ], 400);
+        }
+
     }
 
     /**

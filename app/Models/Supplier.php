@@ -9,4 +9,8 @@ class Supplier extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'image', 'brand'];
+
+    public function transfers() {
+        return $this->hasMany(Transfer::class);
+    }
 }
