@@ -23,16 +23,6 @@ class TransferController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -80,18 +70,13 @@ class TransferController extends Controller
      */
     public function show(Transfer $transfer)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transfer  $transfer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transfer $transfer)
-    {
-        //
+        if(!isset($transfer)) {
+            return response()->json([
+                'status' => 'error',
+            ], 404);
+        };
+        
+        return response()->json($transfer->load('items'), 200);
     }
 
     /**
@@ -114,6 +99,6 @@ class TransferController extends Controller
      */
     public function destroy(Transfer $transfer)
     {
-        //
+        $transfer->delete();
     }
 }
