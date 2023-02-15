@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Transfer;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TransferController extends Controller
 {
@@ -31,12 +32,22 @@ class TransferController extends Controller
     public function store(Request $request)
     {
   
-        $error = $request->validate([
+        $error =  Validator::make( $request->all(), [
             'brand' => 'required',
             'barcode' => 'required',
             'gt' => 'required',
-            'supplier_id' => 'required'
+            'supplier_id' => 'required',
+            'items' => 'required'
         ]);
+
+        if($error->fails()) {
+            $data = [
+                'status' => 'danger',
+                'data' => $error->errors()
+            ];
+            return response($data, 400);
+        };
+
 
         $transfer = Transfer::create($request->all());
         $allItems = array();
@@ -52,11 +63,13 @@ class TransferController extends Controller
 
         if(isset($savedItem) && isset($transfer)) {
             return response()->json([
-                'message' => 'Success'
+                'status' => 'success',
+                'data' => $transfer->load('items')
             ], 200);
         }else {
             return response()->json([
-                'message' => 'Error'
+                'status' => 'danger',
+                'data' => []
             ], 400);
         }
 
@@ -88,7 +101,46 @@ class TransferController extends Controller
      */
     public function update(Request $request, Transfer $transfer)
     {
-        //
+        
+        $error =  Validator::make( $request->all(), [
+            'brand' => 'required',
+            'barcode' => 'required',
+            'gt' => 'required',
+            'supplier_id' => 'required',
+            'items' => 'required'
+        ]);
+
+        if($error->fails()) {
+            $data = [
+                'status' => 'danger',
+                'data' => $error->errors()
+            ];
+            return response($data, 400);
+        };
+
+
+        $transfer->update($request->all());
+        if(isset($transfer)) {
+            foreach($request->items as $item) { 
+                Item::where("id", $item)->update([
+                'qty' => $item['qty'],
+                'lot' => $item['lot'],
+              ]);
+            };
+        };
+
+
+        if(isset($transfer)) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $transfer->load('items')
+            ], 200);
+        }else {
+            return response()->json([
+                'status' => 'danger',
+                'data' => []
+            ], 400);
+        }
     }
 
     /**
@@ -100,5 +152,19 @@ class TransferController extends Controller
     public function destroy(Transfer $transfer)
     {
         $transfer->delete();
+        $checkTransfer = Transfer::find($transfer->id);
+        if(!is_null($checkTransfer)) {
+            $data = [
+                'status' => 'danger',
+            ];
+
+            return response($data, 400);
+        }
+
+        return response([
+            'status' => 'success',
+        ], 200);
+
+
     }
 }
