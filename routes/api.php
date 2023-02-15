@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\TransferController;
+use App\Http\Controllers\Api\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('transfers', TransferController::class);
+
+// Searches api
+Route::post('/transfers/search/{gt}', [TransferController::class, 'search']);
+Route::post('/items/search/{lot}', [ItemController::class, 'search']);
