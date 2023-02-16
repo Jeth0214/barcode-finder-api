@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Item;
+use App\Models\Transfer;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -16,7 +17,7 @@ class ItemController extends Controller
      */
     public function search( Request $request)
     {
-        $items = Item::with('transfer')->where('lot', 'LIKE', '%' . $request->lot . '%')->get();
+        $items = Item::where('lot', 'LIKE', '%' . $request->lot . '%')->get();
         if($items->isEmpty()) {
             $data = [
                 'status' => 'danger',
@@ -29,7 +30,8 @@ class ItemController extends Controller
         $transfers = array();
 
         foreach( $items as $item ) {
-            array_push($transfers, $item->transfer);
+             $transfer = Transfer::with('items')->where('id', 'LIKE', '%' . $item->transfer_id . '%')->get();
+            array_push($transfers, $transfer);
         }
 
         return response( [

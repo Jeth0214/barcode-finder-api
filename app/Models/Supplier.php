@@ -13,4 +13,10 @@ class Supplier extends Model
     public function transfers() {
         return $this->hasMany(Transfer::class);
     }
+    public function items() {
+        return $this->hasManyThrough(
+            Item::class, 
+            Transfer::class,
+        );
+    }
 }

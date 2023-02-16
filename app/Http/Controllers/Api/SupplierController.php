@@ -41,18 +41,24 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
+        $data = array();
+
+        if(!$supplier) {
+            $data = [
+                'status' => 'danger',
+                'message' => 'No transfer found.',
+                'data' => [],
+            ];
+            return response($data, 404);
+        };
+
+        $data = [
+            'status' => 'success',
+                'message' => "ok",
+                'data' => $supplier->load('transfers')
+        ];
+        return response($data, 200);
     }
 
     /**
