@@ -34,7 +34,6 @@ class TransferController extends Controller
   
         $error =  Validator::make( $request->all(), [
             'brand' => 'required',
-            'barcode' => 'required',
             'gt' => 'required',
             'supplier_id' => 'required',
             'items' => 'required'
@@ -43,6 +42,7 @@ class TransferController extends Controller
         if($error->fails()) {
             $data = [
                 'status' => 'danger',
+                'message' => 'Submission failed.',
                 'data' => $error->errors()
             ];
             return response($data, 400);
@@ -64,11 +64,13 @@ class TransferController extends Controller
         if(isset($savedItem) && isset($transfer)) {
             return response()->json([
                 'status' => 'success',
+                'message' => 'Transfer was saved successfully.',
                 'data' => $transfer->load('items')
             ], 200);
         }else {
             return response()->json([
                 'status' => 'danger',
+                'message' => 'There was an error saving',
                 'data' => []
             ], 400);
         }
@@ -83,13 +85,19 @@ class TransferController extends Controller
      */
     public function show(Transfer $transfer)
     {
-        if(!isset($transfer)) {
+        if(($transfer->isEmpty())) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'danger',
+                'message' => 'There is no such Gt',
+                'data' => []
             ], 404);
         };
         
-        return response()->json($transfer->load('items'), 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => '',
+            'data' => $transfer->load('items')
+        ], 200);
     }
 
     /**
@@ -104,7 +112,6 @@ class TransferController extends Controller
         
         $error =  Validator::make( $request->all(), [
             'brand' => 'required',
-            'barcode' => 'required',
             'gt' => 'required',
             'supplier_id' => 'required',
             'items' => 'required'
@@ -113,6 +120,7 @@ class TransferController extends Controller
         if($error->fails()) {
             $data = [
                 'status' => 'danger',
+                'message' => 'There was an error updating',
                 'data' => $error->errors()
             ];
             return response($data, 400);
@@ -133,11 +141,13 @@ class TransferController extends Controller
         if(isset($transfer)) {
             return response()->json([
                 'status' => 'success',
+                'message' => 'Gt was successfully updated.',
                 'data' => $transfer->load('items')
             ], 200);
         }else {
             return response()->json([
                 'status' => 'danger',
+                'message' => 'There was an error updating your Gt data. Please try again',
                 'data' => []
             ], 400);
         }
@@ -163,6 +173,8 @@ class TransferController extends Controller
 
         return response([
             'status' => 'success',
+            'message' => $transfer->gt . 'was successfully deleted',
+            'data' => [],
         ], 200);
 
 

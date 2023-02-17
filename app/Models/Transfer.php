@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transfer extends Model
 {
     use HasFactory;
-    protected $fillable = ['gt', 'brand', 'barcode', 'supplier_id'];
+    protected $fillable = ['gt', 'brand', 'supplier_id'];
 
     /**
      * Get all of the items for the Transfer
@@ -25,7 +25,7 @@ class Transfer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function supplier(): BelongsTo
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }
