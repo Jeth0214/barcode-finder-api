@@ -34,7 +34,7 @@ class TransferController extends Controller
   
         $error =  Validator::make( $request->all(), [
             'brand' => 'required',
-            'gt' => 'required',
+            'gt' => 'required|min:6',
             'supplier_id' => 'required',
             'items' => 'required'
         ]);
@@ -62,19 +62,8 @@ class TransferController extends Controller
         };
 
         if(isset($savedItem) && isset($transfer)) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Transfer was saved successfully.',
-                'data' => $transfer->load('items')
-            ], 200);
-        }else {
-            return response()->json([
-                'status' => 'danger',
-                'message' => 'There was an error saving',
-                'data' => []
-            ], 400);
+            return response($transfer->load('items'), 200);
         }
-
     }
 
     /**
@@ -85,19 +74,9 @@ class TransferController extends Controller
      */
     public function show(Transfer $transfer)
     {
-        if(($transfer->isEmpty())) {
-            return response()->json([
-                'status' => 'danger',
-                'message' => 'There is no such Gt',
-                'data' => []
-            ], 404);
-        };
         
-        return response()->json([
-            'status' => 'success',
-            'message' => '',
-            'data' => $transfer->load('items')
-        ], 200);
+        
+        return response($transfer->load('items'), 200);
     }
 
     /**
@@ -112,45 +91,25 @@ class TransferController extends Controller
         
         $error =  Validator::make( $request->all(), [
             'brand' => 'required',
-            'gt' => 'required',
+            'gt' => 'required|min:6',
             'supplier_id' => 'required',
             'items' => 'required'
         ]);
 
-        if($error->fails()) {
-            $data = [
-                'status' => 'danger',
-                'message' => 'There was an error updating',
-                'data' => $error->errors()
-            ];
-            return response($data, 400);
-        };
 
-
-        $transfer->update($request->all());
+       $transfer->update($request->all());
         if(isset($transfer)) {
             foreach($request->items as $item) { 
-                Item::where("id", $item)->update([
+                Item::updateOrCreate([
                 'qty' => $item['qty'],
                 'lot' => $item['lot'],
+                'transfer_id' => $transfer->id
               ]);
             };
         };
 
+        return response()->json($transfer->load('items'), 200);
 
-        if(isset($transfer)) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Gt was successfully updated.',
-                'data' => $transfer->load('items')
-            ], 200);
-        }else {
-            return response()->json([
-                'status' => 'danger',
-                'message' => 'There was an error updating your Gt data. Please try again',
-                'data' => []
-            ], 400);
-        }
     }
 
     /**
@@ -162,20 +121,8 @@ class TransferController extends Controller
     public function destroy(Transfer $transfer)
     {
         $transfer->delete();
-        $checkTransfer = Transfer::find($transfer->id);
-        if(!is_null($checkTransfer)) {
-            $data = [
-                'status' => 'danger',
-            ];
 
-            return response($data, 400);
-        }
-
-        return response([
-            'status' => 'success',
-            'message' => $transfer->gt . 'was successfully deleted',
-            'data' => [],
-        ], 200);
+        return response($transfer, 200);
 
 
     }
