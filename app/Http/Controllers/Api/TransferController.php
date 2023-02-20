@@ -88,8 +88,8 @@ class TransferController extends Controller
      */
     public function update(Request $request, Transfer $transfer)
     {
-        
-        $error =  Validator::make( $request->all(), [
+
+        $request->validate([
             'brand' => 'required',
             'gt' => 'required|min:6',
             'supplier_id' => 'required',
@@ -97,10 +97,12 @@ class TransferController extends Controller
         ]);
 
 
-       $transfer->update($request->all());
+      $transfer->update($request->all());
+
         if(isset($transfer)) {
+            Item::where('transfer_id', $transfer->id)->delete();
             foreach($request->items as $item) { 
-                Item::updateOrCreate([
+                Item::create([
                 'qty' => $item['qty'],
                 'lot' => $item['lot'],
                 'transfer_id' => $transfer->id
