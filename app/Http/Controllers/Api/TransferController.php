@@ -98,20 +98,14 @@ class TransferController extends Controller
 
 
       $transfer->update($request->all());
-
         if(isset($transfer)) {
-            Item::where('transfer_id', $transfer->id)->delete();
+            $transfer->items()->delete(); 
             foreach($request->items as $item) { 
-                Item::create([
-                'qty' => $item['qty'],
-                'lot' => $item['lot'],
-                'transfer_id' => $transfer->id
-              ]);
+                    $transfer->items()->create(['qty'=>$item['qty'], 'lot'=>$item['lot']]);
             };
         };
 
         return response()->json($transfer->load('items'), 200);
-
     }
 
     /**
