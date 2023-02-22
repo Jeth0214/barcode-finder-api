@@ -18,7 +18,7 @@ class TransferController extends Controller
     public function index()
     {
         //
-        $transfers = Transfer::with('items')->get();
+        $transfers = Transfer::with('branch')->with('items')->get();
 
         return response()->json($transfers);
     }
@@ -33,21 +33,11 @@ class TransferController extends Controller
     {
   
         $error =  Validator::make( $request->all(), [
-            'brand' => 'required',
+            'branch_id' => 'required',
             'gt' => 'required|min:6',
             'supplier_id' => 'required',
             'items' => 'required'
         ]);
-
-        if($error->fails()) {
-            $data = [
-                'status' => 'danger',
-                'message' => 'Submission failed.',
-                'data' => $error->errors()
-            ];
-            return response($data, 400);
-        };
-
 
         $transfer = Transfer::create($request->all());
         $allItems = array();
@@ -90,7 +80,7 @@ class TransferController extends Controller
     {
 
         $request->validate([
-            'brand' => 'required',
+            'branch_id' => 'required',
             'gt' => 'required|min:6',
             'supplier_id' => 'required',
             'items' => 'required'
