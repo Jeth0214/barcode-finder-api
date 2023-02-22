@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transfer extends Model
 {
     use HasFactory;
-    protected $fillable = ['gt', 'supplier_id', 'branch_id'];
+    protected $fillable = ['gt', 'bt', 'supplier_id', 'branch_id'];
 
     /**
      * Get all of the items for the Transfer

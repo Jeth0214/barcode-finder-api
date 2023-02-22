@@ -39,25 +39,10 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function show(Supplier $supplier)
+    public function show(Supplier $supplier, Request $request)
     {
 
-        $data = array();
-
-        if(!$supplier) {
-            $data = [
-                'status' => 'danger',
-                'message' => 'No transfer found.',
-                'data' => [],
-            ];
-            return response($data, 404);
-        };
-
-        $data = [
-            'status' => 'success',
-                'message' => "ok",
-                'data' => $supplier->load('transfers')
-        ];
+         $data = Supplier::where('id', $supplier->id)->with('transfers')->get();
         return response($data, 200);
     }
 

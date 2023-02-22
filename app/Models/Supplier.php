@@ -11,7 +11,7 @@ class Supplier extends Model
     protected $fillable = ['name', 'image', 'brand'];
 
     public function transfers() {
-        return $this->hasMany(Transfer::class);
+        return $this->hasMany(Transfer::class)->orderBy('id', 'desc');
     }
     public function items() {
         return $this->hasManyThrough(

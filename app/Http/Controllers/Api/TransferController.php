@@ -18,7 +18,7 @@ class TransferController extends Controller
     public function index()
     {
         //
-        $transfers = Transfer::with('branch')->with('items')->get();
+        $transfers = Transfer::with('items')->get();
 
         return response()->json($transfers);
     }
@@ -65,8 +65,12 @@ class TransferController extends Controller
     public function show(Transfer $transfer)
     {
         
-        
-        return response($transfer->load('items'), 200);
+        $data = [
+            'transfer' => $transfer,
+            'branch' => $transfer->branch,
+            'items' => $transfer->items
+        ];
+        return response($transfer ,200);
     }
 
     /**
