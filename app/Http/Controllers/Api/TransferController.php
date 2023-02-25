@@ -118,20 +118,14 @@ class TransferController extends Controller
     }
 
     public function search(Request $request) {
-        $transfers = Transfer::with('items')->where('gt', 'LIKE', '%' . $request->gt . '%')->get();
-        if($transfers->isEmpty()) {
-            $data = [
-                'status' => 'danger',
-                'message' => 'No results found.',
-                'data' => []
-            ];
-            return response($data, 404);
-        };
 
-        return response( [
-            'status' => 'success',
-            'message' => 'ok',
-            'data' => $transfers
-        ], 200);
+        $value = $request('id');
+        // $transfers = Transfer::with('items')
+        // ->where('gt', 'LIKE', '%' . $request->gt . '%')
+        // ->orWhere('bt', 'LIKE', '%' . $request->bt)
+        // ->get();
+
+
+        return response( $value, 200);
     }
 }

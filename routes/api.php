@@ -27,5 +27,5 @@ Route::apiResource('transfers', TransferController::class);
 Route::apiResource('branches', BranchController::class);
 
 // Searches api
-Route::post('/transfers/search/{gt}', [TransferController::class, 'search']);
+Route::get('/transfers/search', [TransferController::class, 'search']);
 Route::post('/items/search/{lot}', [ItemController::class, 'search']);
