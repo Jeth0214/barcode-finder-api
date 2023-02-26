@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Transfer;
 use App\Models\Item;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -119,13 +120,27 @@ class TransferController extends Controller
 
     public function search(Request $request) {
 
-        $value = $request('id');
+        $id = $request->query('id');
+        $gt = $request->query('gt');
+        $bt = $request->query('bt');
+
+        $columnsToSearch = ['gt', 'bt'];
+        // $value = $request->get('id');
+        // $value = $request->all();
         // $transfers = Transfer::with('items')
         // ->where('gt', 'LIKE', '%' . $request->gt . '%')
         // ->orWhere('bt', 'LIKE', '%' . $request->bt)
         // ->get();
 
+        $allTransfersFromSupplier = Transfer::where('supplier_id', $id)->get();
+        // ->where('bt', 'LIKE', '%' . $bt . '%')
+        // ->orWhere('gt', 'LIKE', '%' . $gt . '%')
+        //->get();
+    //     $transfer = $allTransfersFromSupplier->where('bt', 'LIKE', '%' . $bt . '%');
+        foreach($columnsToSearch as $column) {
+     $transfer = $allTransfersFromSupplier->where($column, 'LIKE',$request->all());
+}
 
-        return response( $value, 200);
+        return response(   $transfer, 200);
     }
 }
