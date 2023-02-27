@@ -42,8 +42,9 @@ class SupplierController extends Controller
     public function show(Supplier $supplier, Request $request)
     {
 
-         $data = Supplier::where('id', $supplier->id)->with('transfers')->get();
-        return response($data, 200);
+         $supplier = Supplier::find($supplier->id);
+        $supplier->transfers->load('items');      
+        return response($supplier, 200);
     }
 
     /**
