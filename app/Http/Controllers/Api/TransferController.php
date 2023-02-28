@@ -114,33 +114,7 @@ class TransferController extends Controller
         $transfer->delete();
 
         return response($transfer, 200);
-
-
     }
 
-    public function search(Request $request) {
 
-        $id = $request->query('id');
-        $gt = $request->query('gt');
-        $bt = $request->query('bt');
-
-        $columnsToSearch = ['gt', 'bt'];
-        // $value = $request->get('id');
-        // $value = $request->all();
-        // $transfers = Transfer::with('items')
-        // ->where('gt', 'LIKE', '%' . $request->gt . '%')
-        // ->orWhere('bt', 'LIKE', '%' . $request->bt)
-        // ->get();
-
-        $allTransfersFromSupplier = Transfer::where('supplier_id', $id)->get();
-        // ->where('bt', 'LIKE', '%' . $bt . '%')
-        // ->orWhere('gt', 'LIKE', '%' . $gt . '%')
-        //->get();
-    //     $transfer = $allTransfersFromSupplier->where('bt', 'LIKE', '%' . $bt . '%');
-        foreach($columnsToSearch as $column) {
-     $transfer = $allTransfersFromSupplier->where($column, 'LIKE',$request->all());
-}
-
-        return response(   $transfer, 200);
-    }
 }

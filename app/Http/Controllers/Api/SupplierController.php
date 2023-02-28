@@ -43,7 +43,7 @@ class SupplierController extends Controller
     {
 
          $supplier = Supplier::find($supplier->id);
-        $supplier->transfers->load('items');      
+        $supplier->transfers->load('branch')->load('items');      
         return response($supplier, 200);
     }
 

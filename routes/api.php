@@ -25,7 +25,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('transfers', TransferController::class);
 Route::apiResource('branches', BranchController::class);
-
-// Searches api
-Route::get('search', [TransferController::class, 'search']);
-Route::post('/items/search/{lot}', [ItemController::class, 'search']);
