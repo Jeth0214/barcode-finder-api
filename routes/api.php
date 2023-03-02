@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\TransferController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\BranchController;
+use App\Http\Controllers\Api\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('transfers', TransferController::class);
 Route::apiResource('branches', BranchController::class);
+
+Route::post('login', [UsersController::class, 'login']);
