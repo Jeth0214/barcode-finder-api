@@ -19,12 +19,20 @@ use App\Http\Controllers\Api\UsersController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::apiResource('suppliers', SupplierController::class);
+    Route::apiResource('transfers', TransferController::class);
+    Route::apiResource('branches', BranchController::class);
 });
 
-Route::apiResource('suppliers', SupplierController::class);
-Route::apiResource('transfers', TransferController::class);
-Route::apiResource('branches', BranchController::class);
+Route::controller(UsersController::class)->group( function() {
+    Route::post('login', 'login');
+    Route::post('logout', 'logout');
+});
 
-Route::post('login', [UsersController::class, 'login']);

@@ -8,11 +8,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
     //
-    function login(Request $request) {
+   public function login(Request $request) {
         $user = User::where( 'name', $request->name)->first();
         if(!$user || !Hash::check($request->password, $user->password)) {
             return response([
@@ -32,5 +33,11 @@ class UsersController extends Controller
         ];
 
         return response($response, 201);
+    }
+
+     public function logout() {
+        Session::flush();
+        Auth::logout();
+        return response(['status' => 'Success'], 200);
     }
 }
