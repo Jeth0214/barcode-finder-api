@@ -36,7 +36,6 @@ class TransferController extends Controller
         $error =  Validator::make( $request->all(), [
             'branch_id' => 'required',
             'gt' => 'required|min:6',
-            'supplier_id' => 'required',
             'items' => 'required'
         ]);
 

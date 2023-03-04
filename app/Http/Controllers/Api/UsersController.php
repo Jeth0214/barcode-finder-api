@@ -23,12 +23,12 @@ class UsersController extends Controller
             ], 404);
         };
         $token = $user->createToken('barcode_finder-token')->plainTextToken;
-        $user->token = $token;
         $user->save();
 
         $response = [
             'status' => 'success',
             'message' => 'Welcome ' . $user->name ,
+            'token' => $token,
             'user' => $user,
         ];
 
