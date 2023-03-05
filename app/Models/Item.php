@@ -9,6 +9,7 @@ class Item extends Model
 {
     use HasFactory;
     protected $fillable = ['transfer_id', 'qty', 'lot'];
+    public $guarded = [];
 
 
     public function transfer()

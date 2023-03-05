@@ -9,6 +9,7 @@ class Supplier extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'image', 'brand'];
+    public $guarded = [];
 
     public function transfers() {
         return $this->hasMany(Transfer::class)->orderBy('id', 'desc');

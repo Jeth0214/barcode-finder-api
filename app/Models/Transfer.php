@@ -9,6 +9,7 @@ class Transfer extends Model
 {
     use HasFactory;
     protected $fillable = ['gt', 'bt', 'supplier_id', 'branch_id', 'user_id'];
+    public $guarded = [];
 
     /**
      * Get all of the items for the Transfer
@@ -45,7 +46,7 @@ class Transfer extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

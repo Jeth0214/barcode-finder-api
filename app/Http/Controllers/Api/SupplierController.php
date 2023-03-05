@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,9 +46,10 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier, Request $request)
     {
-
+        $user = auth()->user();
          $supplier = Supplier::find($supplier->id);
-        $supplier->transfers->load('branch')->load('items');      
+        // $supplier->transfers->$user()->load('branch')->load('items');  
+        $supplier->transfers->where('user_id', "=", 1)->load('branch')->load('items');  
         return response($supplier, 200);
     }
 
