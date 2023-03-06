@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use App\Models\Transfer;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -47,10 +48,17 @@ class SupplierController extends Controller
     public function show(Supplier $supplier, Request $request)
     {
         $user = auth()->user();
-         $supplier = Supplier::find($supplier->id);
-        // $supplier->transfers->$user()->load('branch')->load('items');  
-        $supplier->transfers->where('user_id', "=", 1)->load('branch')->load('items');  
-        return response($supplier, 200);
+        $supplier = Supplier::find($supplier->id);        
+       $transfers = Transfer::where('supplier_id', $supplier->id)
+                            ->where('user_id', $user->id)
+                            ->with('branch')
+                            ->with('items') 
+                            ->get();
+        $data = [
+            'supplier' => $supplier,
+            'transfers' => $transfers
+        ];
+        return response($data, 200);
     }
 
     /**
