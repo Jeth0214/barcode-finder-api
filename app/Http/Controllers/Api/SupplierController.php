@@ -53,7 +53,7 @@ class SupplierController extends Controller
                             ->where('user_id', $user->id)
                             ->with('branch')
                             ->with('items') 
-                            ->get();
+                            ->orderBy('created_at', 'DESC')->get();
         $data = [
             'supplier' => $supplier,
             'transfers' => $transfers

@@ -30,10 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('transfers', TransferController::class);
 });
 
-Route::controller(UsersController::class)->group( function() {
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
-});
+// Route::controller(UsersController::class)->group( function() {
+//     Route::post('login', 'login');
+//     Route::post('logout', 'logout');
+// });
 
 // unrestricted Resource
 Route::apiResource('branches', BranchController::class);
+Route::post('login', [UsersController::class,'login']);
+Route::get('logout', [UsersController::class, 'logout']);

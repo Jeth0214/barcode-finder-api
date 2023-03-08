@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Laravel\Sanctum\HasApiTokens;
 
 class UsersController extends Controller
 {
@@ -35,8 +36,7 @@ class UsersController extends Controller
         return response($response, 201);
     }
 
-     public function logout() {
-        Session::flush();
+     public function logout(Request $request) {
         Auth::logout();
         return response(['status' => 'Success'], 200);
     }
