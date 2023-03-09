@@ -13,7 +13,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class UsersController extends Controller
 {
-    //
+
+    
    public function login(Request $request) {
         $user = User::where( 'name', $request->name)->first();
         if(!$user || !Hash::check($request->password, $user->password)) {
@@ -37,7 +38,10 @@ class UsersController extends Controller
     }
 
      public function logout(Request $request) {
-        Auth::logout();
-        return response(['status' => 'Success'], 200);
+        Auth::user();
+        
+        // Auth::logout();
+        auth()->user()->tokens()->delete();
+        return response(['status'=> 'Success'], 200);
     }
 }
