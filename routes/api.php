@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\UsersController;
 // });
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::group(['middleware' => ['auth:sanctum']],function () {
     
     Route::apiResource('suppliers', SupplierController::class);
     Route::apiResource('transfers', TransferController::class);
@@ -32,10 +32,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Route::controller(UsersController::class)->group( function() {
-//     Route::post('login', 'login');
-//     Route::post('logout', 'logout');
-// });
-
-// unrestricted Resource
-Route::apiResource('branches', BranchController::class);
+    //     Route::post('login', 'login');
+    //     Route::post('logout', 'logout');
+    // });
+    
+    // unrestricted Resource
+    Route::apiResource('branches', BranchController::class);
 Route::post('login', [UsersController::class,'login']);

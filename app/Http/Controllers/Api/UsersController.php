@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\HasApiTokens;
 
 class UsersController extends Controller
+
 {
+
 
     
    public function login(Request $request) {
@@ -38,10 +40,8 @@ class UsersController extends Controller
     }
 
      public function logout(Request $request) {
-        Auth::user();
-        
-        // Auth::logout();
-        auth()->user()->tokens()->delete();
-        return response(['status'=> 'Success'], 200);
+
+        auth('sanctum')->user()->currentAccessToken()->delete();
+        return response([ "status" => 'Success'], 200);
     }
 }
