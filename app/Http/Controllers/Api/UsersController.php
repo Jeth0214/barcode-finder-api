@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\HasApiTokens;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class UsersController extends Controller
+class UsersController extends BaseController
 
 {
 
@@ -20,28 +21,23 @@ class UsersController extends Controller
    public function login(Request $request) {
         $user = User::where( 'name', $request->name)->first();
         if(!$user || !Hash::check($request->password, $user->password)) {
-            return response([
-                'status' => 'danger',
-                'message' => 'These credentials do not match our records.',
-                    'user' => []
-            ], 404);
+            return $this->sendResponse('Error', 'These credentials do not match our records.', 404 );
         };
         $token = $user->createToken('barcode_finder-token')->plainTextToken;
         $user->save();
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Welcome ' . $user->name ,
+        $data = [
             'token' => $token,
             'user' => $user,
         ];
 
-        return response($response, 201);
+      return  $this->sendResponse('Success', 'Welcome ' . $user->name, 200, $data );
     }
 
      public function logout(Request $request) {
 
         auth('sanctum')->user()->currentAccessToken()->delete();
-        return response([ "status" => 'Success'], 200);
+        Auth::logout();
+        return  $this->sendResponse('Success', 'Logout Successfuly', 200 );
     }
 }

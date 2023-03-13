@@ -23,7 +23,7 @@ use App\Http\Controllers\Api\UsersController;
 //     return $request->user();
 // });
 
-
+// protected routes
 Route::group(['middleware' => ['auth:sanctum']],function () {
     
     Route::apiResource('suppliers', SupplierController::class);
@@ -31,11 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']],function () {
     Route::post('logout', [UsersController::class, 'logout']);
 });
 
-// Route::controller(UsersController::class)->group( function() {
-    //     Route::post('login', 'login');
-    //     Route::post('logout', 'logout');
-    // });
     
-    // unrestricted Resource
-    Route::apiResource('branches', BranchController::class);
+// unprotected Resource
+Route::apiResource('branches', BranchController::class);
 Route::post('login', [UsersController::class,'login']);

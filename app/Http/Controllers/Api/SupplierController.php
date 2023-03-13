@@ -58,7 +58,7 @@ class SupplierController extends Controller
             'supplier' => $supplier,
             'transfers' => $transfers
         ];
-        return response($data, 200);
+        return response()->json($data, 200);
     }
 
     /**
