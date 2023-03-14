@@ -8,8 +8,10 @@ use App\Models\Item;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\TransferRequest;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class TransferController extends Controller
+class TransferController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,15 +32,10 @@ class TransferController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TransferRequest $request)
     {
   
-        $error =  Validator::make( $request->all(), [
-            'gt' => 'required|min:6',
-            'bt' => 'required|min:6',
-            'items' => 'required'
-        ]);
-
+        $validations = $request->validated() ;
         $transfer = Transfer::create($request->all());
         $allItems = array();
         if(isset($transfer)) {
@@ -54,6 +51,7 @@ class TransferController extends Controller
         if(isset($savedItem) && isset($transfer)) {
             return response($transfer->load('items'), 200);
         }
+  
     }
 
     /**
@@ -80,15 +78,10 @@ class TransferController extends Controller
      * @param  \App\Models\Transfer  $transfer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transfer $transfer)
+    public function update(TransferRequest $request, Transfer $transfer)
     {
 
-        $request->validate([
-            'gt' => 'required|min:6',
-            'bt' => 'required|min:6',
-            'items' => 'required'
-        ]);
-
+        $validations = $request->validated();
 
       $transfer->update($request->all());
         if(isset($transfer)) {

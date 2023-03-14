@@ -27,7 +27,9 @@ class TransferRequest extends FormRequest
             'gt' => 'required|min:6',
             'bt' => 'required|min:6',
             'items' => 'required', 
-
+            'user_id' => 'required',
+            'supplier_id' => 'required',
+            'branch_id' => 'required',
         ];
     }
 
@@ -43,7 +45,10 @@ class TransferRequest extends FormRequest
             'gt.min ' => ' Gt must be at least 6 number!',
             'bt.required' => ' Bt is required!',
             'bt.min ' => ' Bt must be at least 6 number!',
-            'items.required' => 'Give at least 1 item!'
+            'items.required' => 'Give at least 1 item!',
+            'user_id.required' => 'Please specify the user!',
+            'supplier_id.required' => 'Please specify the supplier!',
+            'branch_id.required' => 'Please specify the branch!',
         ];
     }
 }
