@@ -37,7 +37,7 @@ class UsersController extends BaseController
      public function logout(Request $request) {
 
         auth('sanctum')->user()->currentAccessToken()->delete();
-        Auth::logout();
+        Auth::guard('web')->logout();
         return  $this->sendResponse('Success', 'Logout Successfuly', 200 );
     }
 }
