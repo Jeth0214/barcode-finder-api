@@ -24,8 +24,8 @@ class TransferRequest extends FormRequest
     public function rules()
     {
         return [
-            'gt' => 'required|min:6',
-            'bt' => 'required|min:6',
+            'gt' => 'required|min:5',
+            'bt' => 'required|min:5',
             'items' => 'required', 
             'user_id' => 'required',
             'supplier_id' => 'required',
@@ -42,9 +42,9 @@ class TransferRequest extends FormRequest
     {
         return [
             'gt.required' => ' Gt is required!',
-            'gt.min ' => ' Gt must be at least 6 number!',
+            'gt.min ' => ' Gt must be at least 5 number!',
             'bt.required' => ' Bt is required!',
-            'bt.min ' => ' Bt must be at least 6 number!',
+            'bt.min ' => ' Bt must be at least 5 number!',
             'items.required' => 'Give at least 1 item!',
             'user_id.required' => 'Please specify the user!',
             'supplier_id.required' => 'Please specify the supplier!',
