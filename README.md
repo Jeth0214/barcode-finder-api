@@ -4,7 +4,7 @@ This is backend api for my project [Barcode Finder](https://jeth0214.github.io/B
 
 
 
-![](/storage//app/public/ic_launcher-playstore.png)
+![](./storage//app/public/ic_launcher-playstore.png)
 
 ## Table of contents
 
